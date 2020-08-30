@@ -1,6 +1,10 @@
 const e = require('express');
 const express = require('express');
 const mongoose = require('mongoose');
+const morgan = require('morgan');
+const bodyParser = require('body-parser');
+
+const cookieParser = require('cookie-parser');
 
 // allow us to use env variables
 require('dotenv').config();
@@ -22,6 +26,12 @@ mongoose
     console.log('Database connected succesfully');
   })
   .catch((err) => console.log(err));
+
+// middlewares
+app.use(morgan('dev'));
+// we can get the json data from request
+app.use(bodyParser.json());
+app.use(cookieParser());
 
 // routes middleware
 app.use('/api', userRoutes);
