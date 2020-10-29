@@ -14,6 +14,7 @@ exports.categoryById = (req, res, next, id) => {
     });
 };
 
+// method for creating a new category
 exports.create = (req, res) => {
     const category = new Category(req.body);
     category.save((err, data) => {

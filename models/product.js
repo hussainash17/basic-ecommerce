@@ -18,9 +18,10 @@ const productSchema = new mongoose.Schema(
             type: Number,
             trim: true,
             required: true,
-            maxlength: 32
+            maxlength: 10
         },
         category: {
+            // category is referred to category model
             type: ObjectId,
             ref: "Category",
             required: true
@@ -33,6 +34,7 @@ const productSchema = new mongoose.Schema(
             default: 0
         },
         photo: {
+            // photo is saved in buffer
             data: Buffer,
             contentType: String
         },
