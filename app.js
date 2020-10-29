@@ -1,43 +1,48 @@
-const e = require('express');
 const express = require('express');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
-const expressValidator = require('express-validator');
 const cookieParser = require('cookie-parser');
+const cors = require('cors');
+const expressValidator = require('express-validator');
 
-// allow us to use env variables
 require('dotenv').config();
-
+// import routes
+const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
+const categoryRoutes = require('./routes/category');
+const productRoutes = require('./routes/product');
+// const braintreeRoutes = require('./routes/braintree');
+const orderRoutes = require('./routes/order');
 
 // app
 const app = express();
 
-//database connection
-mongo_uri = process.env.DATABASE;
+// db
 mongoose
-  .connect(mongo_uri, {
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => {
-    console.log('Database connected succesfully');
-  })
-  .catch((err) => console.log(err));
+    .connect(process.env.DATABASE, {
+        useNewUrlParser: true,
+        useCreateIndex: true
+    })
+    .then(() => console.log('DB Connected'));
 
 // middlewares
 app.use(morgan('dev'));
-// we can get the json data from request
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(expressValidator());
+app.use(cors());
 
 // routes middleware
+app.use('/api', authRoutes);
 app.use('/api', userRoutes);
+app.use('/api', categoryRoutes);
+app.use('/api', productRoutes);
+// app.use('/api', braintreeRoutes);
+app.use('/api', orderRoutes);
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 8000;
+
 app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+    console.log(`Server is running on port ${port}`);
 });
