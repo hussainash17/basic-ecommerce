@@ -5,6 +5,7 @@ const fs = require('fs');
 const Product = require('../models/product');
 const { errorHandler } = require('../helpers/dbErrorHandler');
 
+// this is for getting the product id
 exports.productById = (req, res, next, id) => {
   Product.findById(id)
     .populate('category')
@@ -14,12 +15,15 @@ exports.productById = (req, res, next, id) => {
           error: 'Product not found',
         });
       }
+      // populate product into req 
+      // now in req, product will found
       req.product = product;
       next();
     });
 };
 
 exports.read = (req, res) => {
+  // we dont load photo because of performance issue
   req.product.photo = undefined;
   return res.json(req.product);
 };
@@ -60,6 +64,7 @@ exports.create = (req, res) => {
 
     if (files.photo) {
       // console.log("FILES PHOTO: ", files.photo);
+      // size is the attribute of files.photo
       if (files.photo.size > 1000000) {
         return res.status(400).json({
           error: 'Image should be less than 1mb in size',
@@ -113,6 +118,7 @@ exports.update = (req, res) => {
 
     if (files.photo) {
       // console.log("FILES PHOTO: ", files.photo);
+      // size is the attribute of files.photo
       if (files.photo.size > 1000000) {
         return res.status(400).json({
           error: 'Image should be less than 1mb in size',

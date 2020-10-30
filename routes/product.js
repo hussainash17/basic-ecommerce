@@ -42,7 +42,9 @@ router.get('/products/categories', listCategories);
 router.post('/products/by/search', listBySearch);
 router.get('/product/photo/:productId', photo);
 
+// this is for routing any user
 router.param('userId', userById);
+// this for product routing for CRUD operation
 router.param('productId', productById);
 
 module.exports = router;
