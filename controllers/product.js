@@ -15,7 +15,7 @@ exports.productById = (req, res, next, id) => {
           error: 'Product not found',
         });
       }
-      // populate product into req 
+      // populate product into req
       // now in req, product will found
       req.product = product;
       next();
@@ -107,6 +107,22 @@ exports.update = (req, res) => {
     if (err) {
       return res.status(400).json({
         error: 'Image could not be uploaded',
+      });
+    }
+
+    // check for all fields
+    const { name, description, price, category, quantity, shipping } = fields;
+
+    if (
+      !name ||
+      !description ||
+      !price ||
+      !category ||
+      !quantity ||
+      !shipping
+    ) {
+      return res.status(400).json({
+        error: 'All fields are required',
       });
     }
 

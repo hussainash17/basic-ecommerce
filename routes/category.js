@@ -17,7 +17,6 @@ router.get('/category/:categoryId', read);
 // if a user wants to create a category
 // he must a signed in and authorised as well as admin
 router.post('/category/create/:userId', requireSignin, isAuth, isAdmin, create);
-// router.put('/category/:categoryUpdateId/:userId', requireSignin, isAuth, isAdmin, update);
 router.put(
   '/category/:categoryId/:userId',
   requireSignin,
@@ -33,6 +32,7 @@ router.delete(
   isAdmin,
   remove
 );
+// get all the categories
 router.get('/categories', list);
 
 router.param('categoryId', categoryById);

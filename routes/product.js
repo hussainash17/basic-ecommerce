@@ -20,6 +20,7 @@ const { userById } = require('../controllers/user');
 router.get('/product/:productId', read);
 // creating a new product
 router.post('/product/create/:userId', requireSignin, isAuth, isAdmin, create);
+// userId is needed for authorization
 router.delete(
   '/product/:productId/:userId',
   requireSignin,
