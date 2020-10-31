@@ -159,14 +159,19 @@ exports.update = (req, res) => {
  * sell / arrival
  * by sell = /products?sortBy=sold&order=desc&limit=4
  * by arrival = /products?sortBy=createdAt&order=desc&limit=4
- * if no params are sent, then all products are returned
+ * if no query parameter are sent, then all products are returned
  */
 
 exports.list = (req, res) => {
+  // is query is not sent, by default is 'asc' order
   let order = req.query.order ? req.query.order : 'asc';
+  // is query is not sent, by default sort by id
   let sortBy = req.query.sortBy ? req.query.sortBy : '_id';
+  // is query is not sent, by default limit is by default 6
+  //  we need to parse it to integer
   let limit = req.query.limit ? parseInt(req.query.limit) : 6;
 
+  // photo is a binary data, so we remove photo 
   Product.find()
     .select('-photo')
     .populate('category')
@@ -178,6 +183,7 @@ exports.list = (req, res) => {
           error: 'Products not found',
         });
       }
+      // res.send(products)
       res.json(products);
     });
 };
@@ -189,7 +195,8 @@ exports.list = (req, res) => {
 
 exports.listRelated = (req, res) => {
   let limit = req.query.limit ? parseInt(req.query.limit) : 6;
-
+  // ne means not included. We dont related product without the given product
+  // populate('category', '_id name') means we just need _id and name
   Product.find({ _id: { $ne: req.product }, category: req.product.category })
     .limit(limit)
     .populate('category', '_id name')

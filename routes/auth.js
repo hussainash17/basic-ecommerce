@@ -10,6 +10,9 @@ const {
 const { userSignupValidator } = require('../validator');
 
 router.post('/signup', userSignupValidator, signup);
+// @route   POST api/users/test
+// @desc    User Signin
+// @access  Public
 router.post('/signin', signin);
 router.get('/signout', signout);
 
